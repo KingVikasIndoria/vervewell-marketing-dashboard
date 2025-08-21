@@ -14,6 +14,14 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
+// Serve static files from the React build
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 
 // ---------------------------
 // Load and parse CSV data (robust) + Create comprehensive dataset knowledge
@@ -647,6 +655,16 @@ app.get('/api/data/summary', (_req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to generate summary' });
   }
+});
+
+// ---------------------------
+// Serve static files from the React build
+// ---------------------------
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // ---------------------------
